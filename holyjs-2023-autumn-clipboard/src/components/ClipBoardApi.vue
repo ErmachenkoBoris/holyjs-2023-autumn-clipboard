@@ -7,7 +7,6 @@ defineProps<{
 
 const tryToReadFromClipBoard = () => {
   navigator.clipboard.readText().then((copiedText) => {
-    console.log(copiedText); // copied text will be shown here.
     copiedValue.value=copiedText;
   });
 }
@@ -20,7 +19,7 @@ const copiedValue = ref('');
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      CLIPBOARD API
+      CLIPBOARD API TEST
     </h3>
     <button @click="tryToReadFromClipBoard">READ FROM CLIPBOARD!</button>
     <div>
