@@ -10,6 +10,7 @@ const noInsertCommand = ref(false);
 const successCopyCommand = ref(false);
 const successPasteCommand = ref(false);
 const successInsertCommand = ref(false);
+const copiedValue = ref('');
 
 const tryToReadFromClipBoard = () => {
   resetAllMessages();
@@ -48,7 +49,6 @@ const tryToInsertText = () => {
     return;
   }
 }
-const copiedValue = ref('');
 
 
 const resetAllMessages = () => {
