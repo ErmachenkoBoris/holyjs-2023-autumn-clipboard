@@ -62,73 +62,72 @@ const resetAllMessages = () => {
 </script>
 
 <template>
-  <div class="clipboard">
-    <h3>CLIPBOARD EXEC COMAND</h3>
-    <textarea
-      ref="clipBoardValue"
-      v-model="copiedValue"
-    />
-    <button
-      class="button"
-      @click="tryToReadFromClipBoard"
-    >
-      Read
-    </button>
-    <button
-      class="button"
-      @click="tryToInsertText"
-    >
-      Insert
-    </button>
-    <button
-      class="button"
-      @click="tryToCopyToClipBoard"
-    >
-      Copy
-    </button>
-    <article class="messages-container">
-      <section class="messages">
-        <p
-          v-if="noInsertCommand"
-          class="error"
-        >
-          Not support Paste Command
-        </p>
-        <p
-          v-if="noPasteCommand"
-          class="error"
-        >
-          Not support Paste Command
-        </p>
-        <p
-          v-if="noCopyCommand"
-          class="error"
-        >
-          Not support Copy Command
-        </p>
-        <p
-          v-if="successCopyCommand"
-          class="success"
-        >
-          Copied Text from textarea! try to past as usual
-        </p>
+  <h3>Document: execCommand</h3>
+  <textarea
+    ref="clipBoardValue"
+    v-model="copiedValue"
+    class="clipboard-value"
+  />
+  <button
+    class="button"
+    @click="tryToReadFromClipBoard"
+  >
+    Paste (Read)
+  </button>
+  <button
+    class="button"
+    @click="tryToCopyToClipBoard"
+  >
+    Copy (Write)
+  </button>
+  <button
+    class="button"
+    @click="tryToInsertText"
+  >
+    Insert
+  </button>
+  <article class="messages-container">
+    <section class="messages">
+      <p
+        v-if="noInsertCommand"
+        class="error"
+      >
+        Not support Paste Command
+      </p>
+      <p
+        v-if="noPasteCommand"
+        class="error"
+      >
+        Not support Paste Command
+      </p>
+      <p
+        v-if="noCopyCommand"
+        class="error"
+      >
+        Not support Copy Command
+      </p>
+      <p
+        v-if="successCopyCommand"
+        class="success"
+      >
+        Copied Text from textarea! try to past as usual
+      </p>
 
-        <p
-          v-if="successPasteCommand"
-          class="success"
-        >
-          Paste success!
-        </p>
+      <p
+        v-if="successPasteCommand"
+        class="success"
+      >
+        Paste success!
+      </p>
 
-        <p
-          v-if="successInsertCommand"
-          class="success"
-        >
-          Insert success!
-        </p>
-      </section>
-    </article>
-  </div>
+      <p
+        v-if="successInsertCommand"
+        class="success"
+      >
+        Insert success!
+      </p>
+    </section>
+  </article>
 </template>
 
 <style scoped>
@@ -144,16 +143,15 @@ const resetAllMessages = () => {
 }
 .button {
   cursor: pointer;
-}
-.clipboard {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
+  min-height: 30px;
 }
 .error {
   color: red;
 }
 .success {
   color: green;
+}
+.clipboard-value {
+  min-height: 100px;
 }
 </style>

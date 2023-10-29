@@ -1,29 +1,53 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ClipBoardApi from './components/ClipBoardApi.vue'
-//  @ts-ignore
-import { VueToggles } from 'vue-toggles'
-import ClipBoardExecComand from './components/ClipBoardExecComand.vue';
+import ClipBoardExecCommand from './components/ClipBoardExecCommand.vue';
 
-const example = ref(true)
+const execCommand = ref(true)
 
 </script>
 <template>
   <main class="main">
-    <VueToggles
-      :value="example"
-      :height="30"
-      :width="300"
-      checked-text="ExecCommand"
-      unchecked-text="ClipBoardApi"
-      @click="example = !example"
-    />
-    <ClipBoardExecComand v-if="example" />
-    <ClipBoardApi v-else />
+    <section class="toggle">
+      <div class="option">
+        <input
+          id="execCommandRadio"
+          v-model="execCommand"
+          type="radio"
+          name="clipboardRadio"
+          value="true"
+          class="radio-option"
+        >
+        <label for="execCommandRadio">Document: execCommand</label>
+      </div>
+      <div class="option">
+        <input
+          id="clipboardApiRadio"
+          v-model="execCommand"
+          type="radio"
+          name="clipboardRadio"
+          class="radio-option"
+          value=""
+        >
+        <label for="clipboardApiRadio">Clipboard API</label>
+      </div>
+    </section>
+    <div class="clipboard">
+      <ClipBoardExecCommand v-if="execCommand" />
+      <ClipBoardApi v-else />
+    </div>
   </main>
 </template>
 
 <style scoped>
+.clipboard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-height: 400px;
+  margin-top: 10px;
+}
+
 header {
   line-height: 1.5;
 }
@@ -33,5 +57,18 @@ header {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+.radio-option {
+  margin-right: 20px;
+}
+.option {
+  display: block;
+}
+.toggle {
+  min-width: 300px
+}
+label {
+  font-weight: 500;
+  font-size: 18px;
 }
 </style>

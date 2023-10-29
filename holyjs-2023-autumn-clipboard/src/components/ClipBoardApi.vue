@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-const clipBoardValue = ref<HTMLInputElement | null>(null);
+import { ref } from 'vue'
 
 const permissionsToReadClipboardApi = ref(false);
 const permissionsToWriteClipboardApi = ref(false);
 
+const TIME_DELAY = 1300;
+
+
+const permissionState = ref('');
 const noPasteClipboardApi = ref('');
 const noCopyClipboardApi = ref('');
 const noInsertClipboardApi = ref('');
 
 const successCopyClipboardApi = ref(false);
 const successPasteClipboardApi = ref(false);
-const successInsertClipboardApi = ref(false);
 const copiedValue = ref('');
 
 const tryToReadSetTimeOut = () => {
-  setTimeout(tryToReadFromClipBoard, 1000);
+  resetAllMessages();
+  setTimeout(tryToReadFromClipBoard, TIME_DELAY);
+}
+
+const tryToWriteSetTimeOut = () => {
+  resetAllMessages();
+  setTimeout(tryToCopyToClipBoard, TIME_DELAY);
 }
 
 const tryToReadFromClipBoard = () => {
@@ -41,7 +48,7 @@ const tryToCopyToClipBoard = () => {
   noCopyClipboardApi.value = !navigator?.clipboard?.writeText ? 'No support writeText' : '';
   if(!noCopyClipboardApi.value) {
     navigator.clipboard.writeText(`${copiedValue.value} i love frontend`).then(() => {
-    successPasteClipboardApi.value = true;
+      successCopyClipboardApi.value = true;
    }).catch(error => {
     noCopyClipboardApi.value = error
    })
@@ -54,7 +61,6 @@ const resetAllMessages = () => {
   noInsertClipboardApi.value = '';
   successCopyClipboardApi.value = false;
   successPasteClipboardApi.value = false;
-  successInsertClipboardApi.value = false;
 }
 
 const getPermissions = () => {
@@ -68,115 +74,104 @@ const getPermissions = () => {
   });
 }
 
-const handleVisibility = () => {
-  tryToReadFromClipBoard();
-}
-
-onMounted(() => {
-  // setTimeout(tryToReadFromClipBoard, 5000);
-  getPermissions();
-  document.addEventListener('visibilitychange', handleVisibility)
-
-})
 </script>
 
 <template>
-  <div class="clipboard">
-    <h3>CLIPBOARD API TEST</h3>
-    <textarea
-      id="clipBoardValue"
-      v-model="copiedValue"
-    />
-    <button
-      class="button"
-      @click="tryToReadFromClipBoard"
-    >
-      Read (and paste)
-    </button>
-    <button
-      class="button"
-      @click="tryToCopyToClipBoard"
-    >
-      Copy
-    </button>
-    <button
-      class="button"
-      @click="tryToReadSetTimeOut"
-    >
-      Read setTimeOut
-    </button>
-    <article>
-      <h3>Permissions</h3>
-      <table>
-        <tr>
-          <td>clipboard-read</td>
-          <td
-            :class="{
-              success:
-                permissionsToReadClipboardApi,
-              error:
-                !permissionsToReadClipboardApi}"
-          >
-            {{ permissionsToReadClipboardApi }}
-          </td>
-        </tr>
-        <tr>
-          <td>clipboard-write</td>
-          <td
-            :class="{
-              success:
-                permissionsToWriteClipboardApi,
-              error:
-                !permissionsToWriteClipboardApi}"
-          >
-            {{ permissionsToWriteClipboardApi }}
-          </td>
-        </tr>
-      </table>
-    </article>
-    <article class="messages-container">
-      <section class="messages">
-        <p
-          v-if="noInsertClipboardApi"
-          class="error"
+  <h3>Clipboard API</h3>
+  <textarea
+    id="clipBoardValue"
+    v-model="copiedValue"
+    class="clipboard-value"
+  />
+  <button
+    class="button"
+    @click="tryToReadFromClipBoard"
+  >
+    Paste (Read)
+  </button>
+  <button
+    class="button"
+    @click="tryToCopyToClipBoard"
+  >
+    Copy (Write)
+  </button>
+  <button
+    class="button"
+    @click="tryToReadSetTimeOut"
+  >
+    Paste (Read) setTimeout
+  </button>
+  <button
+    class="button"
+    @click="tryToWriteSetTimeOut"
+  >
+    Copy (Write) setTimeout
+  </button>
+  <article class="permissions">
+    <h3>Permissions</h3>
+    <table>
+      <tr>
+        <td>clipboard-read</td>
+        <td
+          :class="{
+            success:
+              permissionsToReadClipboardApi,
+            error:
+              !permissionsToReadClipboardApi}"
         >
-          {{ noInsertClipboardApi }}
-        </p>
-        <p
-          v-if="noPasteClipboardApi"
-          class="error"
+          {{ permissionsToReadClipboardApi }}
+        </td>
+      </tr>
+      <tr>
+        <td>clipboard-write</td>
+        <td
+          :class="{
+            success:
+              permissionsToWriteClipboardApi,
+            error:
+              !permissionsToWriteClipboardApi}"
         >
-          {{ noPasteClipboardApi }}
-        </p>
-        <p
-          v-if="noCopyClipboardApi"
-          class="error"
-        >
-          {{ noCopyClipboardApi }}
-        </p>
-        <p
-          v-if="successCopyClipboardApi"
-          class="success"
-        >
-          Copied Text from textarea
-        </p>
+          {{ permissionsToWriteClipboardApi }}
+        </td>
+      </tr>
+    </table>
+  </article>
+  <article class="messages-container">
+    <section class="messages">
+      {{ permissionState }}
+      <p
+        v-if="noInsertClipboardApi"
+        class="error"
+      >
+        {{ noInsertClipboardApi }}
+      </p>
+      <p
+        v-if="noPasteClipboardApi"
+        class="error"
+      >
+        {{ noPasteClipboardApi }}
+      </p>
+      <p
+        v-if="noCopyClipboardApi"
+        class="error"
+      >
+        {{ noCopyClipboardApi }}
+      </p>
+      <p
+        v-if="successCopyClipboardApi"
+        class="success"
+      >
+        Copy (Write) from textarea success
+      </p>
 
-        <p
-          v-if="successPasteClipboardApi"
-          class="success"
-        >
-          Read success
-        </p>
-
-        <p
-          v-if="successInsertClipboardApi"
-          class="success"
-        >
-          Insert success
-        </p>
-      </section>
-    </article>
-  </div>
+      <p
+        v-if="successPasteClipboardApi"
+        class="success"
+      >
+        Paste (Read) success
+      </p>
+    </section>
+  </article>
 </template>
 
 <style scoped>
@@ -190,16 +185,18 @@ onMounted(() => {
 }
 .button {
   cursor: pointer;
-}
-.clipboard {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
+  min-height: 30px;
 }
 .error {
   color: red;
 }
 .success {
   color: green;
+}
+.clipboard-value {
+  min-height: 100px;
+}
+.permissions {
+  margin-top: 10px;
 }
 </style>
