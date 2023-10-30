@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import { TIME_DELAY} from '@/consts/consts';
 const permissionsToReadClipboardApi = ref(false);
 const permissionsToWriteClipboardApi = ref(false);
-
-const TIME_DELAY = 1300;
 
 
 const permissionState = ref('');

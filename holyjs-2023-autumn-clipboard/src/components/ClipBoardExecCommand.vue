@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { TIME_DELAY } from '@/consts/consts';
 import { ref } from 'vue'
 
 const clipBoardValue = ref<HTMLInputElement | null>(null);
 
+
+const errorMessage = ref(false);
 const noPasteCommand = ref(false);
 const noCopyCommand = ref(false);
 const noInsertCommand = ref(false);
@@ -20,6 +23,9 @@ const tryToReadFromClipBoard = () => {
     if(clipBoardValue.value) {
       clipBoardValue.value.focus();
       successPasteCommand.value = document.execCommand("paste");
+      if(!successPasteCommand.value) {
+        errorMessage.value = true;
+      }
     }
     return;
   }
@@ -33,9 +39,22 @@ const tryToCopyToClipBoard = () => {
     if(clipBoardValue.value) {
       clipBoardValue.value.select();
       successCopyCommand.value = document.execCommand("copy");
+      if(!successCopyCommand.value) {
+        errorMessage.value = true;
+      }
     }
     return;
   }
+}
+
+const tryToReadFromClipBoardSetTimeOut = () => {
+  resetAllMessages();
+  setTimeout(tryToReadFromClipBoard, TIME_DELAY);
+}
+
+const tryToCopyToClipBoardSetTimeOut = () => {
+  resetAllMessages();
+  setTimeout(tryToCopyToClipBoard, TIME_DELAY);
 }
 
 const tryToInsertText = () => {
@@ -45,6 +64,9 @@ const tryToInsertText = () => {
     if(clipBoardValue.value) {
       clipBoardValue.value.select();
       successInsertCommand.value = document.execCommand("insertText", false, 'I love holy js');
+      if(!successInsertCommand.value) {
+        errorMessage.value = true;
+      }
     }
     return;
   }
@@ -52,6 +74,7 @@ const tryToInsertText = () => {
 
 
 const resetAllMessages = () => {
+  errorMessage.value = false;
   noPasteCommand.value = false;
   noCopyCommand.value = false;
   noInsertCommand.value = false;
@@ -82,6 +105,18 @@ const resetAllMessages = () => {
   </button>
   <button
     class="button"
+    @click="tryToReadFromClipBoardSetTimeOut"
+  >
+    Paste (Read) setTimeout
+  </button>
+  <button
+    class="button"
+    @click="tryToCopyToClipBoardSetTimeOut"
+  >
+    Copy (Write) SetTimeout
+  </button>
+  <button
+    class="button"
     @click="tryToInsertText"
   >
     Insert
@@ -99,6 +134,12 @@ const resetAllMessages = () => {
         class="error"
       >
         Not support Paste Command
+      </p>
+      <p
+        v-if="errorMessage"
+        class="error"
+      >
+        Error
       </p>
       <p
         v-if="noCopyCommand"
