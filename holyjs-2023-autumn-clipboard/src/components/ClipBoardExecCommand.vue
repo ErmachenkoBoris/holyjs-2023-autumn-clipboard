@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TIME_DELAY } from '@/consts/consts';
+import { TIME_DELAY, COPY_WRITE_SET_TIMEOUT, PASTE_READ_SET_TIMEOUT, COPY_WRITE, PASTE_READ,PASTE_SUCCESS, COPY_WRITE_SUCCESS  } from '@/consts/consts';
 import { ref } from 'vue'
 
 const clipBoardValue = ref<HTMLInputElement | null>(null);
@@ -95,31 +95,25 @@ const resetAllMessages = () => {
     class="button"
     @click="tryToReadFromClipBoard"
   >
-    Paste (Read)
+    {{ PASTE_READ }}
   </button>
   <button
     class="button"
     @click="tryToCopyToClipBoard"
   >
-    Copy (Write)
+    {{ COPY_WRITE }}
   </button>
   <button
     class="button"
     @click="tryToReadFromClipBoardSetTimeOut"
   >
-    Paste (Read) setTimeout
+    {{ PASTE_READ_SET_TIMEOUT }}
   </button>
   <button
     class="button"
     @click="tryToCopyToClipBoardSetTimeOut"
   >
-    Copy (Write) SetTimeout
-  </button>
-  <button
-    class="button"
-    @click="tryToInsertText"
-  >
-    Insert
+    {{ COPY_WRITE_SET_TIMEOUT }}
   </button>
   <article class="messages-container">
     <section class="messages">
@@ -151,14 +145,14 @@ const resetAllMessages = () => {
         v-if="successCopyCommand"
         class="success"
       >
-        Copied Text from textarea! try to past as usual
+        {{ COPY_WRITE_SUCCESS }}
       </p>
 
       <p
         v-if="successPasteCommand"
         class="success"
       >
-        Paste success!
+        {{ PASTE_SUCCESS }}
       </p>
 
       <p

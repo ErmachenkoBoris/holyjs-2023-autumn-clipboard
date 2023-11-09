@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { TIME_DELAY} from '@/consts/consts';
+import { TIME_DELAY, COPY_WRITE_SET_TIMEOUT, PASTE_READ_SET_TIMEOUT, COPY_WRITE, PASTE_READ, PASTE_SUCCESS, COPY_WRITE_SUCCESS } from '@/consts/consts';
 const permissionsToReadClipboardApi = ref(false);
 const permissionsToWriteClipboardApi = ref(false);
 
@@ -85,25 +85,25 @@ const getPermissions = () => {
     class="button"
     @click="tryToReadFromClipBoard"
   >
-    Paste (Read)
+    {{ PASTE_READ }}
   </button>
   <button
     class="button"
     @click="tryToCopyToClipBoard"
   >
-    Copy (Write)
+    {{ COPY_WRITE }}
   </button>
   <button
     class="button"
     @click="tryToReadSetTimeOut"
   >
-    Paste (Read) setTimeout
+    {{ PASTE_READ_SET_TIMEOUT }}
   </button>
   <button
     class="button"
     @click="tryToWriteSetTimeOut"
   >
-    Copy (Write) setTimeout
+    {{ COPY_WRITE_SET_TIMEOUT }}
   </button>
   <article class="permissions">
     <h3>Permissions</h3>
@@ -159,14 +159,14 @@ const getPermissions = () => {
         v-if="successCopyClipboardApi"
         class="success"
       >
-        Copy (Write) from textarea success
+        {{ COPY_WRITE_SUCCESS }}
       </p>
 
       <p
         v-if="successPasteClipboardApi"
         class="success"
       >
-        Paste (Read) success
+        {{ PASTE_SUCCESS }}
       </p>
     </section>
   </article>
