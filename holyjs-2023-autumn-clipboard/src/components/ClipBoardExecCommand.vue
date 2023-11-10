@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TIME_DELAY, COPY_WRITE_SET_TIMEOUT, PASTE_READ_SET_TIMEOUT, COPY_WRITE, PASTE_READ,PASTE_SUCCESS, COPY_WRITE_SUCCESS  } from '@/consts/consts';
+import { TIME_DELAY, COPY_WRITE_SET_TIMEOUT, PASTE_READ_SET_TIMEOUT, COPY_WRITE, PASTE_READ,PASTE_SUCCESS, COPY_WRITE_SUCCESS, COPY_WRITE_INFO, PASTE_READ_INFO  } from '@/consts/consts';
 import { ref } from 'vue'
 
 const clipBoardValue = ref<HTMLInputElement | null>(null);
@@ -95,25 +95,45 @@ const resetAllMessages = () => {
     class="button"
     @click="tryToReadFromClipBoard"
   >
-    {{ PASTE_READ }}
+    <p class="value">
+      {{ PASTE_READ }}
+    </p>
+    <p class="info">
+      {{ PASTE_READ_INFO }}
+    </p>
   </button>
   <button
     class="button"
     @click="tryToCopyToClipBoard"
   >
-    {{ COPY_WRITE }}
+    <p class="value">
+      {{ COPY_WRITE }}
+    </p>
+    <p class="info">
+      {{ COPY_WRITE_INFO }}
+    </p>
   </button>
   <button
     class="button"
     @click="tryToReadFromClipBoardSetTimeOut"
   >
-    {{ PASTE_READ_SET_TIMEOUT }}
+    <p class="value">
+      {{ PASTE_READ_SET_TIMEOUT }}
+    </p>
+    <p class="info">
+      {{ PASTE_READ_INFO }}
+    </p>
   </button>
   <button
     class="button"
     @click="tryToCopyToClipBoardSetTimeOut"
   >
-    {{ COPY_WRITE_SET_TIMEOUT }}
+    <p class="value">
+      {{ COPY_WRITE_SET_TIMEOUT }}
+    </p>
+    <p class="info">
+      {{ COPY_WRITE_INFO }}
+    </p>
   </button>
   <article class="messages-container">
     <section class="messages">
@@ -177,8 +197,13 @@ const resetAllMessages = () => {
 
 }
 .button {
-  cursor: pointer;
-  min-height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    min-height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
 }
 .error {
   color: red;
@@ -188,5 +213,9 @@ const resetAllMessages = () => {
 }
 .clipboard-value {
   min-height: 100px;
+}
+
+.info {
+  color: rgb(63, 62, 62)
 }
 </style>
