@@ -43,7 +43,7 @@ const execCommand = ref(true)
 .clipboard {
   display: flex;
   flex-direction: column;
-  width: 340px;
+  width: 360px;
   min-height: 400px;
   margin-top: 10px;
 }
@@ -65,7 +65,7 @@ header {
   display: block;
 }
 .toggle {
-  min-width: 340px
+  min-width: 360px
 }
 label {
   font-weight: 500;
