@@ -64,11 +64,11 @@ const resetAllMessages = () => {
 
 const getPermissions = () => {
   // @ts-ignore
-  navigator.permissions.query({ name: 'clipboard-read' }).then(res => {
+  navigator?.permissions?.query({ name: 'clipboard-read' }).then(res => {
     permissionsToReadClipboardApi.value = res?.state === 'granted' ?? false;
   });
   // @ts-ignore
-  navigator.permissions.query({ name: 'clipboard-write' }).then(res => {
+  navigator?.permissions?.query({ name: 'clipboard-write' }).then(res => {
     permissionsToWriteClipboardApi.value = res?.state === 'granted' ?? false;
   });
 }
